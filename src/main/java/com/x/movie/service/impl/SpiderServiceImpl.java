@@ -3,6 +3,7 @@ package com.x.movie.service.impl;
 import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.text.csv.CsvWriter;
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.json.JSONUtil;
 import com.x.movie.service.SpiderService;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -27,7 +28,7 @@ public class SpiderServiceImpl implements SpiderService {
 
     private static String srcPath = "https://www.dytt8.net/html/gndy/dyzz/index.html";
 
-    private static String diskFilePath = "D:/movie.csv";
+    private static String diskFilePath = "/Users/caishaodong/tmp/movie.csv";
 
     @Override
     public void captureMovieUrl() throws Exception {
@@ -49,6 +50,7 @@ public class SpiderServiceImpl implements SpiderService {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+            log.info(JSONUtil.toJsonStr(movie));
             movies.add(movie);
         });
         CsvWriter writer = CsvUtil.getWriter(diskFilePath, CharsetUtil.CHARSET_UTF_8);

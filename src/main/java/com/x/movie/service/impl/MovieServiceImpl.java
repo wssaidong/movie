@@ -36,7 +36,13 @@ public class MovieServiceImpl implements MovieService {
         for (CsvRow csvRow : rows) {
            String filePath = csvRow.get(1);
            String link = tPath + " " + filePath;
-           RuntimeUtil.execForStr(link);
+           //RuntimeUtil.execForStr(link);
         }
     }
+
+    private void checkfileIsComplete(String file){
+        Boolean existis = FileUtil.file(file).exists();
+        log.info(file, "is" ,existis);
+    }
 }
+
