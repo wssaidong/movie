@@ -4,6 +4,7 @@ import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.text.csv.CsvWriter;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONUtil;
+import com.x.movie.service.Constant;
 import com.x.movie.service.SpiderService;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -26,15 +27,11 @@ import java.util.List;
 @Service
 public class SpiderServiceImpl implements SpiderService {
 
-    private static String srcPath = "https://www.dytt8.net/html/gndy/dyzz/index.html";
-
-    private static String diskFilePath = "/Users/caishaodong/tmp/movie.csv";
-
     @Override
     public void captureMovieUrl() throws Exception {
         log.info("spider start");
         List<String[]> movies = new ArrayList<>();
-        Document doc = Jsoup.connect(srcPath).get();
+        Document doc = Jsoup.connect(Constant.movieSrcPath).get();
         Elements elements = doc.getElementsByClass("co_content8");
         Elements tables = elements.get(0).getElementsByTag("ul").get(0).getElementsByTag("table");
         tables.forEach(table -> {
@@ -53,7 +50,7 @@ public class SpiderServiceImpl implements SpiderService {
             log.info(JSONUtil.toJsonStr(movie));
             movies.add(movie);
         });
-        CsvWriter writer = CsvUtil.getWriter(diskFilePath, CharsetUtil.CHARSET_UTF_8);
+        CsvWriter writer = CsvUtil.getWriter(Constant.movieDataPath, CharsetUtil.CHARSET_UTF_8);
         writer.write(movies);
         writer.close();
     }
