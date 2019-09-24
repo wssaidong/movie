@@ -14,5 +14,9 @@ public class Movie {
     @Id
     public String id;
 
-    public String firstName;
+    public String fileName;
+
+    public String magnetUrl;
+
+    public String downloadUrl;
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -44,8 +45,13 @@ public class SpiderServiceImpl implements SpiderService {
             movie.setId(name);
             try {
                 Document d = Jsoup.connect(url).get();
+                Elements elmList = d.getElementsByTag("a");
+                List<Element> aList = elmList.stream().filter(a -> a.attr("href").indexOf("magnet:") > -1).collect(Collectors.toList());
+                String magnetUrl = aList.get(0).attr("href");
+                movie.setMagnetUrl(magnetUrl);
                 Element downloadLink = d.getElementsByAttributeValue("style","WORD-WRAP: break-word").get(0);
-                downloadLink.text();
+                String downloadUrl = downloadLink.text();
+                movie.setDownloadUrl(downloadUrl);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
