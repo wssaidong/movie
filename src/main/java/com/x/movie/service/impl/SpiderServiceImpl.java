@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +44,8 @@ public class SpiderServiceImpl implements SpiderService {
             String name = e.text();
             String url = e.attr("abs:href");
             movie.setId(name);
+            movie.setFileName(name);
+            movie.setCreateTime(LocalTime.now());
             try {
                 Document d = Jsoup.connect(url).get();
                 Elements elmList = d.getElementsByTag("a");

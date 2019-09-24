@@ -3,6 +3,8 @@ package com.x.movie.domain;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalTime;
+
 /**
  * @Description:
  * @Author caisd1
@@ -12,11 +14,14 @@ import org.springframework.data.annotation.Id;
 @Data
 public class Movie {
     @Id
-    public String id;
+    private String id;
 
-    public String fileName;
+    private String fileName;
 
-    public String magnetUrl;
+    private String magnetUrl;
 
-    public String downloadUrl;
+    private String downloadUrl;
+
+    private LocalTime createTime;
+
 }
