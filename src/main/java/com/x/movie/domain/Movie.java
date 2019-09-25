@@ -3,7 +3,7 @@ package com.x.movie.domain;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 /**
  * @Description:
@@ -22,6 +22,6 @@ public class Movie {
 
     private String downloadUrl;
 
-    private LocalTime createTime;
+    private LocalDateTime createTime;
 
 }
