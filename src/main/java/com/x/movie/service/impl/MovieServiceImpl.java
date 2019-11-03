@@ -1,7 +1,7 @@
 package com.x.movie.service.impl;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.json.JSONUtil;
+import cn.hutool.core.util.StrUtil;
 import com.x.movie.aria2.Aria2Util;
 import com.x.movie.domain.Movie;
 import com.x.movie.domain.repository.MovieRepository;
@@ -30,17 +30,17 @@ public class MovieServiceImpl implements MovieService {
     public void downloadMovie() {
         List<Movie> list = movieRepository.findAll();
         list.stream().forEach(movie -> {
-            if(!checkFileIsExist(movie.getFileName())){
+            if(!checkFileIsExist(movie.getFileName()) && StrUtil.isNotBlank(movie.getMagnetUrl())){
                 Aria2Util.addUri(movie.getFileName(),movie.getMagnetUrl());
             }
         });
     }
 
     private Boolean checkFileIsExist(String fileName){
+        final String fn = fileName.substring(fileName.indexOf("《"), fileName.indexOf("》"));
         List<String> fileList = FileUtil.listFileNames(Constant.downloadPath);
-        log.info(JSONUtil.toJsonStr(fileList));
-        Long count = fileList.stream().filter(x -> x.indexOf("fileName") > -1).count();
-        log.info(fileName, " count =" ,count);
+        Long count = fileList.stream().filter(x -> x.indexOf(fn) > -1).count();
+        log.info("fileName = {} count = {}" ,fileName ,count);
         return count > 0 ? Boolean.TRUE : Boolean.FALSE;
     }
 }

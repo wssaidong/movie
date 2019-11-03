@@ -20,6 +20,6 @@ public class Aria2Util {
         ariaRqtVO.setUrl(path);
         ariaRqtVO.setDir(Constant.downloadPath);
         ariaRqtVO.build();
-        String resp = HttpUtil.post(Constant.aria2RpcServerUrl, JSONUtil.toJsonStr(ariaRqtVO));
+        HttpUtil.post(Constant.aria2RpcServerUrl, JSONUtil.toJsonStr(ariaRqtVO));
     }
 }

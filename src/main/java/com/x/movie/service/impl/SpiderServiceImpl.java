@@ -12,7 +12,6 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +49,18 @@ public class SpiderServiceImpl implements SpiderService {
                 Document d = Jsoup.connect(url).get();
                 Elements elmList = d.getElementsByTag("a");
                 List<Element> aList = elmList.stream().filter(a -> a.attr("href").indexOf("magnet:") > -1).collect(Collectors.toList());
-                String magnetUrl = aList.get(0).attr("href");
-                movie.setMagnetUrl(magnetUrl);
-                Element downloadLink = d.getElementsByAttributeValue("style","WORD-WRAP: break-word").get(0);
-                String downloadUrl = downloadLink.text();
-                movie.setDownloadUrl(downloadUrl);
-            } catch (IOException ex) {
-                ex.printStackTrace();
+                if(aList.size() > 0){
+                    String magnetUrl = aList.get(0).attr("href");
+                    movie.setMagnetUrl(magnetUrl);
+                    if(d.getElementsByAttributeValue("style","WORD-WRAP: break-word").size() >0){
+                        Element downloadLink = d.getElementsByAttributeValue("style","WORD-WRAP: break-word").get(0);
+                        String downloadUrl = downloadLink.text();
+                        movie.setDownloadUrl(downloadUrl);
+                    }
+                }
+            } catch (Exception ex) {
+                log.info("url error {}", url);
+                log.error("captureMovieUrl {}", ex);
             }
             movieRepository.save(movie);
         });
