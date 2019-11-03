@@ -16,7 +16,7 @@ public class Aria2Util {
     public static void addUri(String fileName, String path){
         AriaRqtVO ariaRqtVO = new AriaRqtVO();
         ariaRqtVO.setId(fileName);
-        ariaRqtVO.setToken(fileName);
+        ariaRqtVO.setToken(Constant.token);
         ariaRqtVO.setUrl(path);
         ariaRqtVO.setDir(Constant.downloadPath);
         ariaRqtVO.build();
